@@ -1,0 +1,74 @@
+
+plugins {
+    id "java"
+    id "io.spring.dependency-management"
+    id "org.springframework.boot"
+}
+
+dependencyManagement {
+
+    imports {
+        mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
+    }
+    imports {
+        mavenBom "org.apache.camel:camel-spring-boot-dependencies:${camel_version}"
+    }
+}
+
+
+
+jar.doFirst {
+    baseName = 'comeliest'
+    excludes = ['**/application.yml']
+    manifest.attributes 'Implementation-Version': "${version}"
+}
+
+
+configurations {
+    providedRuntime
+}
+
+task('execJar', type:Jar, dependsOn: 'jar') {
+
+    baseName = 'cameltest'
+    excludes = ['**/application.yml']
+
+    classifier = 'exec'
+    from sourceSets.main.output
+}
+
+
+bootJar {
+    exclude '**/application.yml'
+}
+
+dependencies {
+    compile "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
+
+    compile "org.springframework.boot:spring-boot-starter:${springBootVersion}"
+    compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+
+    compile "org.springframework.boot:spring-boot-starter-undertow:${springBootVersion}"
+    compile "org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}"
+    compile "org.apache.camel:camel-spring-boot-starter:${camel_version}"
+
+    compile "org.apache.camel:camel-jackson-starter:${camel_version}"
+    compile "org.apache.camel:camel-metrics-starter:${camel_version}"
+    compile "org.apache.camel:camel-spring-boot-starter:${camel_version}"
+    compile "org.apache.camel:camel-spring-redis-starter:${camel_version}"
+    compile "org.apache.camel:camel-stream-starter:${camel_version}"
+    compile "org.apache.camel:camel-websocket-starter:${camel_version}"
+
+    compile("org.springframework.boot:spring-boot-actuator:${springBootVersion}")
+    compile("org.springframework.boot:spring-boot-starter-jetty:${springBootVersion}")
+    compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}") {
+        exclude module: 'spring-boot-starter-tomcat'
+    }
+
+    compile "org.apache.camel:camel-stream-starter:${camel_version}"
+
+
+    testCompile group: 'org.apache.camel', name: 'camel-test-spring', version: "${camel_version}"
+    testCompile "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
+
+}
