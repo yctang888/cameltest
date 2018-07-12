@@ -42,6 +42,7 @@ bootJar {
     exclude '**/application.yml'
 }
 
+
 dependencies {
     compile "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
 
@@ -50,6 +51,7 @@ dependencies {
 
     compile "org.springframework.boot:spring-boot-starter-undertow:${springBootVersion}"
     compile "org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}"
+
     compile "org.apache.camel:camel-spring-boot-starter:${camel_version}"
 
     compile "org.apache.camel:camel-jackson-starter:${camel_version}"
@@ -61,14 +63,17 @@ dependencies {
 
     compile("org.springframework.boot:spring-boot-actuator:${springBootVersion}")
     compile("org.springframework.boot:spring-boot-starter-jetty:${springBootVersion}")
-    compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}") {
-        exclude module: 'spring-boot-starter-tomcat'
-    }
+    compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
 
     compile "org.apache.camel:camel-stream-starter:${camel_version}"
 
+    compile "javax.xml.bind:jaxb-api:2.2.11"
+
+    compile "org.springframework.boot:spring-boot-starter-data-redis:${springBootVersion}"
+    compile "org.springframework.boot:spring-boot-starter-thymeleaf:${springBootVersion}"
 
     testCompile group: 'org.apache.camel', name: 'camel-test-spring', version: "${camel_version}"
     testCompile "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
+    runtime group: 'com.sun.activation', name: 'javax.activation', version: '+'
 
 }
